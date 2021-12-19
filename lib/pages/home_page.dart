@@ -1,9 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:grupo_vista_app/pages/tabs/chats_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/notifications_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/profile_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/services_tab.dart';
 import 'package:grupo_vista_app/widgets/custom_animateed_bottom_bar.dart';
+import 'package:grupo_vista_app/widgets/custom_appbar.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -20,9 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vista App'),
-      ),
+      // appBar: const CustomAppBar(),
       body: getBody(),
       bottomNavigationBar: _buildBottomBar(),
     );

@@ -10,12 +10,13 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Vista App',
       routes: appRoutes,
-      initialRoute: 'home',
+      initialRoute: 'login',
       theme: ThemeData(
         // brightness: Brightness.light,
         primaryColor: const Color(0xff211915),
-        colorScheme:
-            theme.colorScheme.copyWith(secondary: const Color(0xffD6BA5E)),
+        colorScheme: theme.colorScheme.copyWith(
+            primary: const Color(0xffD6BA5E),
+            secondary: const Color(0xffD6BA5E)),
         appBarTheme: const AppBarTheme(
             color: Color(0xff211915), centerTitle: true, elevation: 1.5),
       ),
