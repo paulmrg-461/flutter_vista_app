@@ -79,7 +79,8 @@ class LoginPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                           backgroundColor: const Color(0xffD6BA5E),
-                          onPressed: () => print('Mira mama, me aplastaron')),
+                          onPressed: () =>
+                              Navigator.pushReplacementNamed(context, 'home')),
                       const _GoogleButton(),
                       Padding(
                         padding: const EdgeInsets.only(top: 24),
