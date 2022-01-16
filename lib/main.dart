@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
             primary: const Color(0xffD6BA5E),
             secondary: const Color(0xffD6BA5E)),
         appBarTheme: const AppBarTheme(
-            color: Color(0xff211915), centerTitle: true, elevation: 1.5),
+            color: Color(0xff1B1B1B), centerTitle: true, elevation: 1.5),
       ),
     );
   }

@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         // backgroundColor: Colors.black54,
-        backgroundColor: const Color(0xff211915),
+        backgroundColor: const Color(0xff1B1B1B),
         body: Center(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),

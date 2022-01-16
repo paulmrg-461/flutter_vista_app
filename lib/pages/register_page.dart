@@ -12,7 +12,7 @@ class RegisterPage extends StatelessWidget {
     TextEditingController passwordController = TextEditingController();
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color(0xff211915),
+        backgroundColor: const Color(0xff1B1B1B),
         appBar: AppBar(
           title: const Text(
             'Quiero registrarme',

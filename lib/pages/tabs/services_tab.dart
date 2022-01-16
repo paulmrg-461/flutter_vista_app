@@ -43,7 +43,7 @@ class ServicesTab extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xff211915),
+      backgroundColor: const Color(0xff1B1B1B),
       body: Stack(
         children: [
           Container(
@@ -67,30 +67,15 @@ class ServicesTab extends StatelessWidget {
   }
 }
 
-class FatButtonTemp extends StatelessWidget {
-  const FatButtonTemp({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return FatButton(
-      icon: FontAwesomeIcons.carCrash,
-      title: 'Motor Accident',
-      onPressed: () => print('Hola amiguis'),
-      gradientColor1: const Color(0xff6989F5),
-      gradientColor2: const Color(0xff906EF5),
-    );
-  }
-}
-
 class _HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return IconHeader(
+    return const IconHeader(
       icon: FontAwesomeIcons.globe,
       subtitle: 'Grupo Vista',
       title: 'Servicios disponibles',
-      color1: const Color(0xff694706),
-      color2: const Color(0xffD6BA5E),
+      color1: Color(0xff694706),
+      color2: Color(0xffD6BA5E),
     );
   }
 }

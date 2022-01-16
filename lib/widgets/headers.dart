@@ -7,10 +7,9 @@ class CurvedHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: double.infinity,
       width: double.infinity,
-      //color: Color(0xff615AAB),
       child: CustomPaint(
         painter: _CurvedHeaderPainter(),
       ),
@@ -23,11 +22,8 @@ class _CurvedHeaderPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
     //Properties
-    paint.color = Color(0xff615AAB);
+    paint.color = const Color(0xff615AAB);
     paint.style = PaintingStyle.fill;
-    //paint.style = PaintingStyle.stroke;
-    //paint.strokeWidth = 20.0;
-
     final path = Path();
     //Draw with the path and paint
     path.lineTo(0, size.height * 0.3);
@@ -50,7 +46,7 @@ class WaveHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: double.infinity,
       width: double.infinity,
       //color: Color(0xff615AAB),
@@ -66,10 +62,8 @@ class _WaveHeaderPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final paint = Paint();
     //Properties
-    paint.color = Color(0xff615AAB);
+    paint.color = const Color(0xff615AAB);
     paint.style = PaintingStyle.fill;
-    //paint.style = PaintingStyle.stroke;
-    //paint.strokeWidth = 20.0;
 
     final path = Path();
     //Draw with the path and paint
@@ -97,13 +91,14 @@ class IconHeader extends StatelessWidget {
   final Color? color1;
   final Color? color2;
 
-  IconHeader({
+  const IconHeader({
+    Key? key,
     @required this.icon,
     @required this.title,
     @required this.subtitle,
     this.color1 = Colors.deepPurpleAccent,
     this.color2 = Colors.deepPurple,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -146,11 +141,6 @@ class IconHeader extends StatelessWidget {
               semanticsLabel: 'Logo Grupo Vista',
               height: 110,
             )
-            // FaIcon(
-            //   icon!,
-            //   size: 80.0,
-            //   color: Colors.white,
-            // ),
           ],
         )
       ],
