@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class CurvedHeader extends StatelessWidget {
@@ -106,7 +107,7 @@ class IconHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color whiteColor = Colors.white.withOpacity(0.7);
+    final Color whiteColor = const Color(0xff211915).withOpacity(0.8);
     return Stack(
       children: [
         _IconHeaderBackground(color1: color1!, color2: color2!),
@@ -127,24 +128,29 @@ class IconHeader extends StatelessWidget {
             ),
             Text(
               subtitle!,
-              style: TextStyle(fontSize: 18, color: whiteColor),
+              style: TextStyle(fontSize: 22, color: whiteColor),
             ),
             const SizedBox(
-              height: 22.0,
+              height: 18.0,
             ),
             Text(
               title!,
               style: TextStyle(
-                  fontSize: 26, color: whiteColor, fontWeight: FontWeight.bold),
+                  fontSize: 32, color: whiteColor, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
               height: 22.0,
             ),
-            FaIcon(
-              icon!,
-              size: 80.0,
-              color: Colors.white,
-            ),
+            SvgPicture.asset(
+              'assets/icons/logo_grupo_vista_black.svg',
+              semanticsLabel: 'Logo Grupo Vista',
+              height: 110,
+            )
+            // FaIcon(
+            //   icon!,
+            //   size: 80.0,
+            //   color: Colors.white,
+            // ),
           ],
         )
       ],

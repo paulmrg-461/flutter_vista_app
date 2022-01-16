@@ -10,13 +10,15 @@ class FatButton extends StatelessWidget {
   final Color? gradientColor1;
   final Color? gradientColor2;
 
-  FatButton(
-      {@required this.icon,
+  const FatButton(
+      {Key? key,
+      @required this.icon,
       @required this.title,
       @required this.onPressed,
       this.primaryColor = Colors.white,
       this.gradientColor1 = Colors.deepPurple,
-      this.gradientColor2 = Colors.purpleAccent});
+      this.gradientColor2 = Colors.purpleAccent})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +50,8 @@ class _FatButtonBackground extends StatelessWidget {
         ),
       ),
       width: double.infinity,
-      height: 100.0,
-      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+      height: 120.0,
+      margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       decoration: BoxDecoration(
           boxShadow: <BoxShadow>[
             BoxShadow(
@@ -82,15 +84,18 @@ class _ButtonInformation extends StatelessWidget {
               children: [
                 FaIcon(
                   fatButonProvider.icon,
-                  color: Colors.white,
-                  size: 36.0,
+                  color: const Color(0xff211915),
+                  size: 52.0,
                 ),
                 const SizedBox(
-                  width: 14.0,
+                  width: 18.0,
                 ),
                 Text(
                   fatButonProvider.title,
-                  style: const TextStyle(fontSize: 18.0, color: Colors.white),
+                  style: const TextStyle(
+                      fontSize: 26.0,
+                      fontWeight: FontWeight.w500,
+                      color: Color(0xff211915)),
                 ),
               ],
             ),
@@ -114,8 +119,8 @@ class _TransparentRightIcon extends StatelessWidget {
       top: -20.0,
       child: FaIcon(
         fatButtonProvider.icon,
-        size: 150.0,
-        color: fatButtonProvider.primaryColor.withOpacity(0.2),
+        size: 145.0,
+        color: fatButtonProvider.primaryColor.withOpacity(0.25),
       ),
     );
   }

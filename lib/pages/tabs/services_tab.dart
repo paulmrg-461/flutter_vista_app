@@ -19,30 +19,14 @@ class ServicesTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final items = <ItemButton>[
-      ItemButton(FontAwesomeIcons.carCrash, 'Motor Accident',
-          const Color(0xff6989F5), const Color(0xff906EF5)),
-      ItemButton(FontAwesomeIcons.plus, 'Medical Emergency',
-          const Color(0xff66A9F2), const Color(0xff536CF6)),
-      ItemButton(FontAwesomeIcons.theaterMasks, 'Theft / Harrasement',
-          const Color(0xffF2D572), const Color(0xffE06AA3)),
-      ItemButton(FontAwesomeIcons.biking, 'Awards', Color(0xff317183),
-          Color(0xff46997D)),
-      ItemButton(FontAwesomeIcons.carCrash, 'Motor Accident', Color(0xff6989F5),
-          Color(0xff906EF5)),
-      ItemButton(FontAwesomeIcons.plus, 'Medical Emergency', Color(0xff66A9F2),
-          Color(0xff536CF6)),
-      ItemButton(FontAwesomeIcons.theaterMasks, 'Theft / Harrasement',
-          Color(0xffF2D572), Color(0xffE06AA3)),
-      ItemButton(FontAwesomeIcons.biking, 'Awards', Color(0xff317183),
-          Color(0xff46997D)),
-      ItemButton(FontAwesomeIcons.carCrash, 'Motor Accident', Color(0xff6989F5),
-          Color(0xff906EF5)),
-      ItemButton(FontAwesomeIcons.plus, 'Medical Emergency', Color(0xff66A9F2),
-          Color(0xff536CF6)),
-      ItemButton(FontAwesomeIcons.theaterMasks, 'Theft / Harrasement',
-          Color(0xffF2D572), Color(0xffE06AA3)),
-      ItemButton(FontAwesomeIcons.biking, 'Awards', Color(0xff317183),
-          Color(0xff46997D)),
+      ItemButton(FontAwesomeIcons.gavel, 'Abogados', const Color(0xffD6BA5E),
+          const Color(0xff9D7628)),
+      ItemButton(FontAwesomeIcons.userCog, 'Ingenieros',
+          const Color(0xffD6BA5E), const Color(0xff9D7628)),
+      ItemButton(FontAwesomeIcons.handHoldingUsd, 'Contadores',
+          const Color(0xffD6BA5E), const Color(0xff9D7628)),
+      ItemButton(FontAwesomeIcons.briefcase, 'Administradores',
+          const Color(0xffD6BA5E), const Color(0xff9D7628)),
     ];
 
     List<Widget> itemMap = items
@@ -102,11 +86,11 @@ class _HeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconHeader(
-      icon: FontAwesomeIcons.plus,
-      subtitle: 'You\'ve requested',
-      title: 'Medical Assistance',
-      color1: const Color(0xff526BF6),
-      color2: const Color(0xff67ACF2),
+      icon: FontAwesomeIcons.globe,
+      subtitle: 'Grupo Vista',
+      title: 'Servicios disponibles',
+      color1: const Color(0xff694706),
+      color2: const Color(0xffD6BA5E),
     );
   }
 }
