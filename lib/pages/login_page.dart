@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:grupo_vista_app/pages/register_page.dart';
+import 'package:grupo_vista_app/providers/user_provider.dart';
+import 'package:grupo_vista_app/widgets/custom_alert_dialog.dart';
 import 'package:grupo_vista_app/widgets/custom_buttom.dart';
 import 'package:grupo_vista_app/widgets/custom_input.dart';
+import 'package:provider/provider.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  UserProvider? userProvider;
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
-    TextEditingController passwordController = TextEditingController();
+    userProvider = Provider.of<UserProvider>(context);
     return SafeArea(
       child: Scaffold(
         // backgroundColor: Colors.black54,
@@ -79,8 +90,8 @@ class LoginPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
                           backgroundColor: const Color(0xffD6BA5E),
-                          onPressed: () =>
-                              Navigator.pushReplacementNamed(context, 'home')),
+                          onPressed: () => _login(emailController.text.trim(),
+                              passwordController.text.trim())),
                       const _GoogleButton(),
                       Padding(
                         padding: const EdgeInsets.only(top: 24),
@@ -96,8 +107,11 @@ class LoginPage extends StatelessWidget {
                               width: 12,
                             ),
                             GestureDetector(
-                              onTap: () =>
-                                  Navigator.pushNamed(context, 'register'),
+                              onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => RegisterPage(
+                                          userProvider: userProvider))),
                               child: const Text('Regístrate',
                                   style: TextStyle(
                                       color: Color(0xffD6BA5E),
@@ -132,6 +146,22 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _login(String email, String password) {
+    if (email == '' || password == '') {
+      CustomAlertDialog().showCustomDialog(
+          context,
+          'Campos vacíos',
+          'Los campos no pueden estar vacíos. Por favor revise los campos e intente nuevamente',
+          'Aceptar');
+    } else {
+      userProvider!.login(email, password).then((value) =>
+          value == 'Login success'
+              ? Navigator.pushReplacementNamed(context, 'home')
+              : CustomAlertDialog().showCustomDialog(
+                  context, 'Credenciales incorrectas', value, 'Aceptar'));
+    }
   }
 }
 

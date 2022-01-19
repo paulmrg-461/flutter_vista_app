@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grupo_vista_app/pages/chat_page.dart';
 
 class ChatListItem extends StatelessWidget {
   final IconData? icon;
@@ -20,76 +21,83 @@ class ChatListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 26),
-      child: Row(
-        children: [
-          Container(
-            width: 72,
-            height: 72,
-            decoration: const BoxDecoration(
-              color: Color(0xffD6BA5E),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-                child: FaIcon(
-              icon!,
-              size: 42,
-              color: const Color(0xff211915),
+      child: InkWell(
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ChatPage(title: title, icon: icon),
             )),
-          ),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title!,
-                    style: const TextStyle(
-                        fontSize: 24,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5),
-                    child: Text(
-                      message!,
-                      overflow: TextOverflow.ellipsis,
+        child: Row(
+          children: [
+            Container(
+              width: 72,
+              height: 72,
+              decoration: const BoxDecoration(
+                color: Color(0xffD6BA5E),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                  child: FaIcon(
+                icon!,
+                size: 42,
+                color: const Color(0xff211915),
+              )),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title!,
+                      style: const TextStyle(
+                          fontSize: 22,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      child: Text(
+                        message!,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white.withOpacity(0.85),
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
+                    Text(
+                      date!,
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 15,
                           color: Colors.white.withOpacity(0.85),
                           fontWeight: FontWeight.w400),
                     ),
-                  ),
-                  Text(
-                    date!,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white.withOpacity(0.85),
-                        fontWeight: FontWeight.w400),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-          counter == 0
-              ? Container()
-              : Container(
-                  width: 32,
-                  height: 32,
-                  decoration: const BoxDecoration(
-                    color: Color(0xffD6BA5E),
-                    shape: BoxShape.circle,
+            counter == 0
+                ? Container()
+                : Container(
+                    width: 32,
+                    height: 32,
+                    decoration: const BoxDecoration(
+                      color: Color(0xffD6BA5E),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                        child: Text(
+                      '$counter',
+                      style: const TextStyle(
+                          fontSize: 20,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    )),
                   ),
-                  child: Center(
-                      child: Text(
-                    '$counter',
-                    style: const TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  )),
-                ),
-        ],
+          ],
+        ),
       ),
     );
   }

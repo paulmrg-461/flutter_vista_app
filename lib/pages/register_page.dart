@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:grupo_vista_app/providers/user_provider.dart';
+import 'package:grupo_vista_app/widgets/custom_alert_dialog.dart';
 import 'package:grupo_vista_app/widgets/custom_buttom.dart';
 import 'package:grupo_vista_app/widgets/custom_input.dart';
 
 class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  final UserProvider? userProvider;
+  const RegisterPage({Key? key, @required this.userProvider}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -67,13 +70,33 @@ class RegisterPage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
                     backgroundColor: const Color(0xffD6BA5E),
-                    onPressed: () =>
-                        print('Mira mama, me aplastaron el registrarme')),
+                    onPressed: () => _register(
+                        nameController.text.trim(),
+                        emailController.text.trim().toLowerCase(),
+                        passwordController.text.trim(),
+                        context)),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  void _register(
+      String name, String email, String password, BuildContext context) {
+    if (name == '' || email == '' || password == '') {
+      CustomAlertDialog().showCustomDialog(
+          context,
+          'Campos vacíos',
+          'Los campos no pueden estar vacíos. Por favor revise los campos e intente nuevamente',
+          'Aceptar');
+    } else {
+      userProvider!.register(name, email, password).then((value) =>
+          value == 'Registration success'
+              ? Navigator.pushReplacementNamed(context, 'home')
+              : CustomAlertDialog().showCustomDialog(
+                  context, 'Registro incorrecto', value, 'Aceptar'));
+    }
   }
 }

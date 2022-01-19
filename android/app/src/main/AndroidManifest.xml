@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.grupo_vista_app">
+    package="co.devpaul.grupo_vista_app">
    <application
         android:label="grupo_vista_app"
         android:name="${applicationName}"
