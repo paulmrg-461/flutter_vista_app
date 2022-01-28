@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Vista App',
         routes: appRoutes,
-        initialRoute: 'login',
+        initialRoute: 'loading',
         theme: ThemeData(
           // brightness: Brightness.light,
           primaryColor: const Color(0xff211915),

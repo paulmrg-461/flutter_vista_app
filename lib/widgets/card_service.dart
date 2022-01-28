@@ -50,7 +50,7 @@ class _FatButtonBackground extends StatelessWidget {
         ),
       ),
       width: double.infinity,
-      height: 120.0,
+      height: 110.0,
       margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
       decoration: BoxDecoration(
           boxShadow: <BoxShadow>[
@@ -75,7 +75,7 @@ class _ButtonInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     final fatButonProvider = Provider.of<_FatButtonModel>(context);
     return Container(
-      margin: const EdgeInsets.all(14.0),
+      margin: const EdgeInsets.all(16.0),
       child: Center(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,12 +88,12 @@ class _ButtonInformation extends StatelessWidget {
                   size: 52.0,
                 ),
                 const SizedBox(
-                  width: 18.0,
+                  width: 16.0,
                 ),
                 Text(
                   fatButonProvider.title,
                   style: const TextStyle(
-                      fontSize: 26.0,
+                      fontSize: 24.0,
                       fontWeight: FontWeight.w500,
                       color: Color(0xff211915)),
                 ),

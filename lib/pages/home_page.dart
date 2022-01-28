@@ -1,14 +1,12 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:grupo_vista_app/pages/tabs/chats_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/notifications_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/profile_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/services_tab.dart';
-import 'package:grupo_vista_app/widgets/custom_animateed_bottom_bar.dart';
+import 'package:grupo_vista_app/widgets/custom_animated_bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();

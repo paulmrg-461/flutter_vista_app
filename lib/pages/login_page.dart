@@ -87,8 +87,8 @@ class _LoginPageState extends State<LoginPage> {
                           text: 'Iniciar sesión',
                           width: double.infinity,
                           fontColor: const Color(0xff211915),
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 18,
                           backgroundColor: const Color(0xffD6BA5E),
                           onPressed: () => _login(emailController.text.trim(),
                               passwordController.text.trim())),
@@ -198,14 +198,14 @@ class _GoogleButton extends StatelessWidget {
                 child: Image.asset('assets/icons/google_logo.png'),
               ),
               const SizedBox(
-                width: 10,
+                width: 6,
               ),
               const Text(
                 'Iniciar con Google',
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 18,
                     color: Color(0xff211915),
-                    fontWeight: FontWeight.bold),
+                    fontWeight: FontWeight.w600),
               ),
             ],
           )),

@@ -118,7 +118,7 @@ class IconHeader extends StatelessWidget {
         Column(
           children: [
             const SizedBox(
-              height: 80.0,
+              height: 60.0,
               width: double.infinity,
             ),
             Text(
@@ -126,7 +126,7 @@ class IconHeader extends StatelessWidget {
               style: TextStyle(fontSize: 22, color: whiteColor),
             ),
             const SizedBox(
-              height: 18.0,
+              height: 16.0,
             ),
             Text(
               title!,
@@ -134,7 +134,7 @@ class IconHeader extends StatelessWidget {
                   fontSize: 32, color: whiteColor, fontWeight: FontWeight.bold),
             ),
             const SizedBox(
-              height: 22.0,
+              height: 18.0,
             ),
             SvgPicture.asset(
               'assets/icons/logo_grupo_vista_black.svg',
@@ -160,10 +160,10 @@ class _IconHeaderBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 300.0,
+      height: 290.0,
       decoration: BoxDecoration(
           borderRadius:
-              const BorderRadius.only(bottomLeft: Radius.circular(90.0)),
+              const BorderRadius.only(bottomLeft: Radius.circular(80.0)),
           gradient: LinearGradient(
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,

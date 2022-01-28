@@ -50,7 +50,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
   Padding _myAppBar() {
     return Padding(
-      padding: const EdgeInsets.only(top: 18, left: 18, right: 18),
+      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 12),
       child: Row(
         children: [
           IconButton(
@@ -58,12 +58,12 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               icon: const Icon(
                 Icons.arrow_back,
                 color: Colors.white,
-                size: 38,
+                size: 32,
               )),
           Container(
-            width: 65,
-            height: 65,
-            margin: const EdgeInsets.only(left: 16),
+            width: 55,
+            height: 55,
+            margin: const EdgeInsets.only(left: 8),
             decoration: const BoxDecoration(
               color: Color(0xffD6BA5E),
               shape: BoxShape.circle,
@@ -71,30 +71,30 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             child: Center(
                 child: FaIcon(
               widget.icon!,
-              size: 42,
+              size: 34,
               color: const Color(0xff211915),
             )),
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 14),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.title!,
                     style: const TextStyle(
-                        fontSize: 24,
+                        fontSize: 22,
                         color: Colors.white,
                         fontWeight: FontWeight.w600),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 6),
+                    padding: const EdgeInsets.only(top: 4),
                     child: Text(
                       'Activo ahora',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                          fontSize: 20,
+                          fontSize: 16,
                           color: Colors.white.withOpacity(0.85),
                           fontWeight: FontWeight.w400),
                     ),
@@ -108,7 +108,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
               icon: const Icon(
                 Icons.more_vert_rounded,
                 color: Colors.white,
-                size: 38,
+                size: 32,
               ))
         ],
       ),
@@ -127,12 +127,12 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                 offset: const Offset(0, 5),
                 blurRadius: 5)
           ]),
-      margin: const EdgeInsets.only(left: 28.0, right: 28.0, bottom: 28),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      margin: const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.only(right: 8.0),
+            padding: const EdgeInsets.only(right: 6.0),
             child: IconTheme(
               data: const IconThemeData(color: Colors.white),
               child: IconButton(
@@ -141,7 +141,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                     color: _isWriting
                         ? Colors.white
                         : Colors.white.withOpacity(0.3),
-                    size: 32,
+                    size: 28,
                   ),
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
@@ -184,7 +184,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                             color: _isWriting
                                 ? const Color(0xffD6BA5E)
                                 : Colors.white.withOpacity(0.3),
-                            size: 28,
+                            size: 26,
                           ),
                           splashColor: Colors.transparent,
                           highlightColor: Colors.transparent,
@@ -204,7 +204,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     _focusNode.requestFocus();
 
     final newMessage = ChatMessage(
-      uid: '123',
+      uid: '1234',
       text: text,
       animationController: AnimationController(
           vsync: this, duration: const Duration(milliseconds: 300)),

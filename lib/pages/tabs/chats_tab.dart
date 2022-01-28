@@ -21,12 +21,12 @@ class ChatsTab extends StatelessWidget {
                     'Conversaciones',
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 42,
+                        fontSize: 38,
                         fontWeight: FontWeight.bold),
                   ),
                   const FaIcon(
                     FontAwesomeIcons.edit,
-                    size: 36,
+                    size: 34,
                     color: Color(0xffD6BA5E),
                   )
                 ],

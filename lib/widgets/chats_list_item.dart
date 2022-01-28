@@ -30,8 +30,8 @@ class ChatListItem extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: 72,
-              height: 72,
+              width: 70,
+              height: 70,
               decoration: const BoxDecoration(
                 color: Color(0xffD6BA5E),
                 shape: BoxShape.circle,
@@ -45,14 +45,14 @@ class ChatListItem extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title!,
                       style: const TextStyle(
-                          fontSize: 22,
+                          fontSize: 20,
                           color: Colors.white,
                           fontWeight: FontWeight.w600),
                     ),
@@ -62,7 +62,7 @@ class ChatListItem extends StatelessWidget {
                         message!,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 16,
                             color: Colors.white.withOpacity(0.85),
                             fontWeight: FontWeight.w400),
                       ),
@@ -70,7 +70,7 @@ class ChatListItem extends StatelessWidget {
                     Text(
                       date!,
                       style: TextStyle(
-                          fontSize: 15,
+                          fontSize: 14,
                           color: Colors.white.withOpacity(0.85),
                           fontWeight: FontWeight.w400),
                     ),
@@ -81,8 +81,8 @@ class ChatListItem extends StatelessWidget {
             counter == 0
                 ? Container()
                 : Container(
-                    width: 32,
-                    height: 32,
+                    width: 30,
+                    height: 30,
                     decoration: const BoxDecoration(
                       color: Color(0xffD6BA5E),
                       shape: BoxShape.circle,
@@ -91,7 +91,7 @@ class ChatListItem extends StatelessWidget {
                         child: Text(
                       '$counter',
                       style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
                     )),
