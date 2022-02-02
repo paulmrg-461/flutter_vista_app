@@ -68,7 +68,7 @@ class RegisterPage extends StatelessWidget {
                     width: double.infinity,
                     fontColor: const Color(0xff211915),
                     fontWeight: FontWeight.bold,
-                    fontSize: 20,
+                    fontSize: 16,
                     backgroundColor: const Color(0xffD6BA5E),
                     onPressed: () => _register(
                         nameController.text.trim(),

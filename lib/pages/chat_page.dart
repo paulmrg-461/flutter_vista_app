@@ -84,19 +84,33 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                   Text(
                     widget.title!,
                     style: const TextStyle(
-                        fontSize: 22,
+                        fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.w600),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 4),
-                    child: Text(
-                      'Activo ahora',
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white.withOpacity(0.85),
-                          fontWeight: FontWeight.w400),
+                    padding: const EdgeInsets.only(top: 6),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 12,
+                          height: 12,
+                          decoration: BoxDecoration(
+                              color: Colors.green.withOpacity(0.8),
+                              shape: BoxShape.circle),
+                        ),
+                        const SizedBox(
+                          width: 6,
+                        ),
+                        Text(
+                          'Activo ahora',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white.withOpacity(0.85),
+                              fontWeight: FontWeight.w400),
+                        ),
+                      ],
                     ),
                   ),
                 ],
@@ -204,7 +218,7 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     _focusNode.requestFocus();
 
     final newMessage = ChatMessage(
-      uid: '1234',
+      uid: '123',
       text: text,
       animationController: AnimationController(
           vsync: this, duration: const Duration(milliseconds: 300)),

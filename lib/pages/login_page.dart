@@ -38,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             color: Colors.white,
-                            fontSize: 32,
+                            fontSize: 28,
                             letterSpacing: 0.4,
                             fontWeight: FontWeight.w700)),
                     const SizedBox(
@@ -88,11 +88,11 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           fontColor: const Color(0xff211915),
                           fontWeight: FontWeight.w600,
-                          fontSize: 18,
+                          fontSize: 16,
                           backgroundColor: const Color(0xffD6BA5E),
                           onPressed: () => _login(emailController.text.trim(),
                               passwordController.text.trim())),
-                      const _GoogleButton(),
+                      _GoogleButton(userProvider: userProvider!),
                       Padding(
                         padding: const EdgeInsets.only(top: 24),
                         child: Row(
@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                             const Text('¿Eres nuevo?',
                                 style: TextStyle(
                                     color: Colors.white,
-                                    fontSize: 20,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.w400)),
                             const SizedBox(
                               width: 12,
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                               child: const Text('Regístrate',
                                   style: TextStyle(
                                       color: Color(0xffD6BA5E),
-                                      fontSize: 20,
+                                      fontSize: 18,
                                       fontWeight: FontWeight.w700)),
                             ),
                           ],
@@ -136,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: 16,
                           // letterSpacing: 0.4,
                           fontWeight: FontWeight.w400)),
                 ),
@@ -160,14 +160,16 @@ class _LoginPageState extends State<LoginPage> {
           value == 'Login success'
               ? Navigator.pushReplacementNamed(context, 'home')
               : CustomAlertDialog().showCustomDialog(
-                  context, 'Credenciales incorrectas', value, 'Aceptar'));
+                  context, 'Ha ocurrido un error', value, 'Aceptar'));
     }
   }
 }
 
 class _GoogleButton extends StatelessWidget {
+  final UserProvider? userProvider;
   const _GoogleButton({
     Key? key,
+    this.userProvider,
   }) : super(key: key);
 
   @override
@@ -187,7 +189,12 @@ class _GoogleButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(26),
                 // side: BorderSide(color: Colors.red)
               ))),
-          onPressed: () => 'Mira mama, me aplastaron el Google',
+          onPressed: () => userProvider!
+              .signInWithGoogle(context: context)
+              .then((value) => value == 'Registration success'
+                  ? Navigator.pushReplacementNamed(context, 'home')
+                  : CustomAlertDialog().showCustomDialog(
+                      context, 'Ha ocurrido un error', value, 'Aceptar')),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -203,7 +210,7 @@ class _GoogleButton extends StatelessWidget {
               const Text(
                 'Iniciar con Google',
                 style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 16,
                     color: Color(0xff211915),
                     fontWeight: FontWeight.w600),
               ),

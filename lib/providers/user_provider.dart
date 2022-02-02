@@ -3,6 +3,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:grupo_vista_app/models/user_model.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 
@@ -94,6 +95,66 @@ class UserProvider with ChangeNotifier {
       }
       return 'Error en el proceso de registro, por favor intenta nuevamente.';
     }
+  }
+
+  Future<String> signInWithGoogle({required BuildContext context}) async {
+    User? user;
+
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
+    final GoogleSignInAccount? googleSignInAccount =
+        await googleSignIn.signIn();
+
+    String? _deviceId = await PlatformDeviceId.getDeviceId;
+
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+          await googleSignInAccount.authentication;
+
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+
+      try {
+        _userCredentials = await auth.signInWithCredential(credential);
+
+        user = _userCredentials!.user;
+        String _token = await auth.currentUser!.getIdToken();
+
+        await _saveToken(_token);
+        await _saveUID(_userCredentials!.user!.uid);
+
+        messaging = FirebaseMessaging.instance;
+        messaging.getToken().then((value) {
+          _setFCMToken(value);
+          print('FCMToken: $value');
+          users
+              .doc(_userCredentials!.user!.email)
+              .set({
+                'clientName': user!.displayName,
+                'clientEmail': user.email,
+                'clientPhotoURL': user.photoURL,
+                'clientEnable': false,
+                'clientRegisterDate': DateTime.now(),
+                'deviceId': _deviceId,
+                'deviceTokens': [value]
+              })
+              .then((value) => print("User Added"))
+              .catchError((error) => print("Failed to add user: $error"));
+        });
+        return "Registration success";
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'account-exists-with-different-credential') {
+          return 'No es posible acceder con esta cuenta debido a que se encuentra asociada a una existente, por favor intenta nuevamente.';
+        } else if (e.code == 'invalid-credential') {
+          return 'Credenciales incorrectas, por favor intenta nuevamente.';
+        }
+      } catch (e) {
+        return 'Ha ocurrido un error, por favor intenta nuevamente.';
+      }
+    }
+    return 'Ha ocurrido un error, por favor intenta nuevamente.';
   }
 
   Future<bool> logout() async {
