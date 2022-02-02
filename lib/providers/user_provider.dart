@@ -33,7 +33,7 @@ class UserProvider with ChangeNotifier {
         _setFCMToken(value);
         print('FCMToken: $value');
         users
-            .doc(_userCredentials!.user!.uid)
+            .doc(_userCredentials!.user!.email)
             .update({
               'deviceTokens': FieldValue.arrayUnion([value])
             })
@@ -99,13 +99,10 @@ class UserProvider with ChangeNotifier {
 
   Future<String> signInWithGoogle({required BuildContext context}) async {
     User? user;
-
+    String? _deviceId = await PlatformDeviceId.getDeviceId;
     final GoogleSignIn googleSignIn = GoogleSignIn();
-
     final GoogleSignInAccount? googleSignInAccount =
         await googleSignIn.signIn();
-
-    String? _deviceId = await PlatformDeviceId.getDeviceId;
 
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
@@ -117,10 +114,9 @@ class UserProvider with ChangeNotifier {
       );
 
       try {
-        _userCredentials = await auth.signInWithCredential(credential);
-
-        user = _userCredentials!.user;
         String _token = await auth.currentUser!.getIdToken();
+        _userCredentials = await auth.signInWithCredential(credential);
+        user = _userCredentials!.user;
 
         await _saveToken(_token);
         await _saveUID(_userCredentials!.user!.uid);
@@ -129,19 +125,30 @@ class UserProvider with ChangeNotifier {
         messaging.getToken().then((value) {
           _setFCMToken(value);
           print('FCMToken: $value');
-          users
-              .doc(_userCredentials!.user!.email)
-              .set({
-                'clientName': user!.displayName,
-                'clientEmail': user.email,
-                'clientPhotoURL': user.photoURL,
-                'clientEnable': false,
-                'clientRegisterDate': DateTime.now(),
-                'deviceId': _deviceId,
-                'deviceTokens': [value]
-              })
-              .then((value) => print("User Added"))
-              .catchError((error) => print("Failed to add user: $error"));
+
+          _userCredentials!.additionalUserInfo!.isNewUser
+              ? users
+                  .doc(_userCredentials!.user!.email)
+                  .set({
+                    'clientName': user!.displayName,
+                    'clientEmail': user.email,
+                    'clientPhotoURL': user.photoURL,
+                    'clientEnable': false,
+                    'clientRegisterDate': DateTime.now(),
+                    'deviceId': _deviceId,
+                    'deviceTokens': [value]
+                  })
+                  .then((value) => print("User Added"))
+                  .catchError((error) => print("Failed to add user: $error"))
+              : users
+                  .doc(_userCredentials!.user!.email)
+                  .update({
+                    'deviceTokens': FieldValue.arrayUnion([value])
+                  })
+                  // .update({'deviceTokens': value})
+                  .then((value) => print("User updated"))
+                  .catchError(
+                      (error) => print("Failed to update user: $error"));
         });
         return "Registration success";
       } on FirebaseAuthException catch (e) {
