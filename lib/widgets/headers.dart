@@ -162,6 +162,12 @@ class _IconHeaderBackground extends StatelessWidget {
       width: double.infinity,
       height: 290.0,
       decoration: BoxDecoration(
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                offset: const Offset(4, 6),
+                blurRadius: 10.0)
+          ],
           borderRadius:
               const BorderRadius.only(bottomLeft: Radius.circular(80.0)),
           gradient: LinearGradient(

@@ -114,9 +114,9 @@ class UserProvider with ChangeNotifier {
       );
 
       try {
-        String _token = await auth.currentUser!.getIdToken();
         _userCredentials = await auth.signInWithCredential(credential);
         user = _userCredentials!.user;
+        String _token = await auth.currentUser!.getIdToken();
 
         await _saveToken(_token);
         await _saveUID(_userCredentials!.user!.uid);
@@ -158,6 +158,7 @@ class UserProvider with ChangeNotifier {
           return 'Credenciales incorrectas, por favor intenta nuevamente.';
         }
       } catch (e) {
+        print(e);
         return 'Ha ocurrido un error, por favor intenta nuevamente.';
       }
     }
@@ -188,9 +189,6 @@ class UserProvider with ChangeNotifier {
       QuerySnapshot querySnapshot = await userInformationRef.get();
       final List<UserModel> userInformation =
           querySnapshot.docs.map((doc) => doc.data() as UserModel).toList();
-
-      print('TOLA');
-      print(userInformation[0]);
 
       return userInformation[0];
     } catch (e) {

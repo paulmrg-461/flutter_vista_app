@@ -32,21 +32,29 @@ class FatButton extends StatelessWidget {
               gradientColor1!;
           Provider.of<_FatButtonModel>(context).gradientColor2 =
               gradientColor2!;
-          return GestureDetector(
-              onTap: onPressed!, child: _FatButtonBackground());
+          return _FatButtonBackground(
+            onPressed: onPressed,
+          );
         }));
   }
 }
 
 class _FatButtonBackground extends StatelessWidget {
+  final VoidCallback? onPressed;
+
+  const _FatButtonBackground({Key? key, @required this.onPressed})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     final fatButtonProvider = Provider.of<_FatButtonModel>(context);
     return Container(
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16.0),
-        child: Stack(
-          children: [_TransparentRightIcon(), _ButtonInformation()],
+      child: InkWell(
+        onTap: onPressed,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16.0),
+          child: Stack(
+            children: [_TransparentRightIcon(), _ButtonInformation()],
+          ),
         ),
       ),
       width: double.infinity,

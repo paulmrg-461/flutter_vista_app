@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:animate_do/animate_do.dart';
+import 'package:grupo_vista_app/models/user_model.dart';
+import 'package:grupo_vista_app/providers/services_provider.dart';
 import 'package:grupo_vista_app/widgets/card_service.dart';
+import 'package:grupo_vista_app/widgets/custom_alert_dialog.dart';
 import 'package:grupo_vista_app/widgets/headers.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ItemButton {
   final IconData icon;
@@ -14,7 +18,8 @@ class ItemButton {
 }
 
 class ServicesTab extends StatelessWidget {
-  const ServicesTab({Key? key}) : super(key: key);
+  final UserModel? userModel;
+  const ServicesTab({Key? key, @required this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +40,19 @@ class ServicesTab extends StatelessWidget {
               child: FatButton(
                 icon: item.icon,
                 title: item.title,
-                onPressed: () => print('Hola tolos'),
+                onPressed: () => ServicesProvider.createServiceRequest(
+                        userModel!, item.title)
+                    .then((value) => value
+                        ? CustomAlertDialog().showCustomDialog(
+                            context,
+                            'Solicitud creada exitosamente',
+                            'La solicitud del servicio de ${item.title} ha sido creada exitosamente. En un momento uno de nuestros profesionales se comunicará contigo.',
+                            'Aceptar')
+                        : CustomAlertDialog().showCustomDialog(
+                            context,
+                            'Error al realizar solicitud',
+                            'Ha ocurrido un error al intentar solicitar el servicio de ${item.title}. Por favor intenta nuevamente.',
+                            'Aceptar')),
                 gradientColor1: item.color1,
                 gradientColor2: item.color2,
               ),
@@ -43,27 +60,48 @@ class ServicesTab extends StatelessWidget {
         .toList();
 
     return Scaffold(
-      backgroundColor: const Color(0xff1B1B1B),
-      body: Stack(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(top: 210.0),
-            child: ListView(
-                physics: const BouncingScrollPhysics(),
-                children: <Widget>[
-                  const SizedBox(
-                    height: 70.0,
+        backgroundColor: const Color(0xff1B1B1B),
+        body: userModel!.clientEnable!
+            ? Stack(
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 210.0),
+                    child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        children: <Widget>[
+                          const SizedBox(
+                            height: 70.0,
+                          ),
+                          ...itemMap,
+                          const SizedBox(
+                            height: 14.0,
+                          ),
+                        ]),
                   ),
-                  ...itemMap,
-                  const SizedBox(
-                    height: 14.0,
+                  _HeaderWidget(),
+                ],
+              )
+            : Center(
+                child: InkWell(
+                  onTap: () => launch("tel://3218910268"),
+                  child: Container(
+                    width: double.infinity,
+                    margin: const EdgeInsets.symmetric(horizontal: 22),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                        color: Colors.white10,
+                        borderRadius: BorderRadius.circular(22)),
+                    child: const Text(
+                        'Aún no cuentas con una suscripción activa a Vista APP. Si deseas más información, por favor comunícate al número 3218910268. Ten en cuenta que las solicitudes de registro pueden tardar hasta 24 horas en ser habilitadas.',
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            // letterSpacing: 0.4,
+                            fontWeight: FontWeight.w400)),
                   ),
-                ]),
-          ),
-          _HeaderWidget(),
-        ],
-      ),
-    );
+                ),
+              ));
   }
 }
 

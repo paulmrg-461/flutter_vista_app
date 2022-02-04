@@ -24,13 +24,9 @@ class LoadingPage extends StatelessWidget {
                   semanticsLabel: 'Logo Grupo Vista',
                   width: MediaQuery.of(context).size.height * 0.175,
                 ),
-                const Text(
-                  'Cargando...',
-                  style: TextStyle(
-                      color: Color(0xffD6BA5E),
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20),
-                ),
+                const CircularProgressIndicator(
+                  color: Color(0xffD6BA5E),
+                )
               ],
             ),
           );
