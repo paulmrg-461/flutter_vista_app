@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grupo_vista_app/models/user_model.dart';
 import 'package:grupo_vista_app/widgets/chats_list_item.dart';
 
 class ChatsTab extends StatelessWidget {
-  const ChatsTab({Key? key}) : super(key: key);
+  final UserModel? userModel;
+  const ChatsTab({Key? key, @required this.userModel}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,58 +41,29 @@ class ChatsTab extends StatelessWidget {
                 physics: const BouncingScrollPhysics(),
                 child: Column(
                   children: [
-                    const ChatListItem(
+                    ChatListItem(
                       icon: FontAwesomeIcons.gavel,
                       title: 'Abogados',
                       message: 'Hola, necesito un servicio con el Grupo Vista',
                       date: '16 de enero de 2022 - 14:56',
                       counter: 3,
+                      userModel: userModel,
                     ),
-                    const ChatListItem(
-                        icon: FontAwesomeIcons.userCog,
-                        title: 'Ingenieros',
-                        message:
-                            'Hola, necesito un servicio con el Grupo Vista',
-                        date: '16 de enero de 2022 - 14:56'),
-                    const ChatListItem(
-                      icon: FontAwesomeIcons.handHoldingUsd,
-                      title: 'Contadores',
+                    ChatListItem(
+                      icon: FontAwesomeIcons.userCog,
+                      title: 'Ingenieros',
                       message: 'Hola, necesito un servicio con el Grupo Vista',
                       date: '16 de enero de 2022 - 14:56',
-                      counter: 5,
+                      userModel: userModel,
                     ),
-                    const ChatListItem(
-                        icon: FontAwesomeIcons.briefcase,
-                        title: 'Administradores',
+                    ChatListItem(
+                        icon: FontAwesomeIcons.handHoldingUsd,
+                        title: 'Contadores',
                         message:
                             'Hola, necesito un servicio con el Grupo Vista',
-                        date: '16 de enero de 2022 - 14:56'),
-                    const ChatListItem(
-                      icon: FontAwesomeIcons.gavel,
-                      title: 'Abogados',
-                      message: 'Hola, necesito un servicio con el Grupo Vista',
-                      date: '16 de enero de 2022 - 14:56',
-                      counter: 3,
-                    ),
-                    const ChatListItem(
-                        icon: FontAwesomeIcons.userCog,
-                        title: 'Ingenieros',
-                        message:
-                            'Hola, necesito un servicio con el Grupo Vista',
-                        date: '16 de enero de 2022 - 14:56'),
-                    const ChatListItem(
-                      icon: FontAwesomeIcons.handHoldingUsd,
-                      title: 'Contadores',
-                      message: 'Hola, necesito un servicio con el Grupo Vista',
-                      date: '16 de enero de 2022 - 14:56',
-                      counter: 5,
-                    ),
-                    const ChatListItem(
-                        icon: FontAwesomeIcons.briefcase,
-                        title: 'Administradores',
-                        message:
-                            'Hola, necesito un servicio con el Grupo Vista',
-                        date: '16 de enero de 2022 - 14:56'),
+                        date: '16 de enero de 2022 - 14:56',
+                        counter: 5,
+                        userModel: userModel),
                   ],
                 ),
               ))

@@ -3,17 +3,22 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grupo_vista_app/models/message_model.dart';
+import 'package:grupo_vista_app/models/user_model.dart';
+import 'package:grupo_vista_app/providers/messages_provider.dart';
 import 'package:grupo_vista_app/widgets/chat_message.dart';
 
 class ChatPage extends StatefulWidget {
   final String? title;
   final IconData? icon;
   final String? receiverEmail;
+  final UserModel? userModel;
   const ChatPage(
       {Key? key,
       @required this.title,
       @required this.icon,
-      @required this.receiverEmail})
+      @required this.receiverEmail,
+      @required this.userModel})
       : super(key: key);
 
   @override
@@ -221,6 +226,17 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
 
     _textController.clear();
     _focusNode.requestFocus();
+
+    MessageModel messageModel = MessageModel(
+        title: 'Tienes un mensaje de ${widget.userModel!.clientName}',
+        body: text,
+        isProfessional: false,
+        photoUrl: widget.userModel!.clientPhotoURL,
+        seen: false,
+        type: widget.title,
+        senderId: widget.userModel!.clientEmail,
+        receiverId: widget.receiverEmail);
+    MessagesProvider.sendNewMessage(messageModel);
 
     final newMessage = ChatMessage(
       uid: '123',

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grupo_vista_app/models/user_model.dart';
 import 'package:grupo_vista_app/pages/chat_page.dart';
 
 class ChatListItem extends StatelessWidget {
@@ -8,13 +9,15 @@ class ChatListItem extends StatelessWidget {
   final String? message;
   final String? date;
   final int? counter;
+  final UserModel? userModel;
   const ChatListItem(
       {Key? key,
       @required this.icon,
       @required this.title,
       @required this.message,
       @required this.date,
-      this.counter = 0})
+      this.counter = 0,
+      @required this.userModel})
       : super(key: key);
 
   @override
@@ -29,6 +32,7 @@ class ChatListItem extends StatelessWidget {
                 title: title,
                 icon: icon,
                 receiverEmail: 'nestor.botina@grupovista.co',
+                userModel: userModel,
               ),
             )),
         child: Row(

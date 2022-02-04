@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
   Widget getBody(UserModel _userModel) {
     List<Widget> pages = [
       ServicesTab(userModel: _userModel),
-      const ChatsTab(),
+      ChatsTab(userModel: _userModel),
       const NotificationsTab(),
       ProfileTab(
         userModel: _userModel,
