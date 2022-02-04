@@ -8,7 +8,12 @@ import 'package:grupo_vista_app/widgets/chat_message.dart';
 class ChatPage extends StatefulWidget {
   final String? title;
   final IconData? icon;
-  const ChatPage({Key? key, @required this.title, @required this.icon})
+  final String? receiverEmail;
+  const ChatPage(
+      {Key? key,
+      @required this.title,
+      @required this.icon,
+      @required this.receiverEmail})
       : super(key: key);
 
   @override

@@ -117,8 +117,8 @@ class IconHeader extends StatelessWidget {
         ),
         Column(
           children: [
-            const SizedBox(
-              height: 60.0,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.055,
               width: double.infinity,
             ),
             Text(
@@ -139,7 +139,7 @@ class IconHeader extends StatelessWidget {
             SvgPicture.asset(
               'assets/icons/logo_grupo_vista_black.svg',
               semanticsLabel: 'Logo Grupo Vista',
-              height: 110,
+              height: MediaQuery.of(context).size.height * 0.12,
             )
           ],
         )
@@ -160,7 +160,7 @@ class _IconHeaderBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 290.0,
+      height: MediaQuery.of(context).size.height * 0.3,
       decoration: BoxDecoration(
           boxShadow: <BoxShadow>[
             BoxShadow(

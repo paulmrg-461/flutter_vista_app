@@ -65,12 +65,13 @@ class ServicesTab extends StatelessWidget {
             ? Stack(
                 children: [
                   Container(
-                    margin: const EdgeInsets.only(top: 210.0),
+                    margin: EdgeInsets.only(
+                        top: MediaQuery.of(context).size.height * 0.22),
                     child: ListView(
                         physics: const BouncingScrollPhysics(),
                         children: <Widget>[
-                          const SizedBox(
-                            height: 70.0,
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.065,
                           ),
                           ...itemMap,
                           const SizedBox(

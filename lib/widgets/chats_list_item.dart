@@ -25,7 +25,11 @@ class ChatListItem extends StatelessWidget {
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatPage(title: title, icon: icon),
+              builder: (context) => ChatPage(
+                title: title,
+                icon: icon,
+                receiverEmail: 'nestor.botina@grupovista.co',
+              ),
             )),
         child: Row(
           children: [
