@@ -21,4 +21,16 @@ class MessagesProvider {
           })
           .then((value) => true)
           .catchError((error) => false);
+
+  static Stream<QuerySnapshot<MessageModel>> getAllMessages() => messages
+      .where(
+        'senderId',
+        isEqualTo: 'co.devpaul@gmail.com',
+      )
+      .orderBy('date', descending: true)
+      .withConverter<MessageModel>(
+          fromFirestore: (snapshot, _) =>
+              MessageModel.fromJson(snapshot.data()!),
+          toFirestore: (messages, _) => messages.toJson())
+      .snapshots();
 }

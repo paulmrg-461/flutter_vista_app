@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grupo_vista_app/models/message_model.dart';
 import 'package:grupo_vista_app/models/user_model.dart';
+import 'package:grupo_vista_app/providers/messages_provider.dart';
 import 'package:grupo_vista_app/widgets/chats_list_item.dart';
 
 class ChatsTab extends StatelessWidget {
@@ -36,37 +39,96 @@ class ChatsTab extends StatelessWidget {
               const SizedBox(
                 height: 32.0,
               ),
-              Expanded(
-                  child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    ChatListItem(
-                      icon: FontAwesomeIcons.gavel,
-                      title: 'Abogados',
-                      message: 'Hola, necesito un servicio con el Grupo Vista',
-                      date: '16 de enero de 2022 - 14:56',
-                      counter: 3,
-                      userModel: userModel,
+
+              StreamBuilder<QuerySnapshot<MessageModel>>(
+                stream: MessagesProvider.getAllMessages(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<MessageModel>> snapshot) {
+                  if (snapshot.hasError) {
+                    print(snapshot.error);
+                    return Center(
+                      child: Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(horizontal: 22),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: Colors.white10,
+                            borderRadius: BorderRadius.circular(22)),
+                        child: const Text(
+                            'Ha ocurrido un error al cargar las conversaciones. Por favor intenta nuevamente.',
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                // letterSpacing: 0.4,
+                                fontWeight: FontWeight.w400)),
+                      ),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xffD6BA5E),
+                      ),
+                    );
+                  }
+
+                  if (snapshot.hasData) {
+                    return Expanded(
+                      child: ListView(
+                        physics: const BouncingScrollPhysics(),
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot<MessageModel> document) {
+                          MessageModel message = document.data()!;
+                          return ChatListItem(
+                              icon: FontAwesomeIcons.gavel,
+                              title: message.title,
+                              message: message.body,
+                              date: '${message.date}',
+                              userModel: userModel);
+                        }).toList(),
+                      ),
+                    );
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xffD6BA5E),
                     ),
-                    ChatListItem(
-                      icon: FontAwesomeIcons.userCog,
-                      title: 'Ingenieros',
-                      message: 'Hola, necesito un servicio con el Grupo Vista',
-                      date: '16 de enero de 2022 - 14:56',
-                      userModel: userModel,
-                    ),
-                    ChatListItem(
-                        icon: FontAwesomeIcons.handHoldingUsd,
-                        title: 'Contadores',
-                        message:
-                            'Hola, necesito un servicio con el Grupo Vista',
-                        date: '16 de enero de 2022 - 14:56',
-                        counter: 5,
-                        userModel: userModel),
-                  ],
-                ),
-              ))
+                  );
+                },
+              ),
+
+              // Expanded(
+              //     child: SingleChildScrollView(
+              //   physics: const BouncingScrollPhysics(),
+              //   child: Column(
+              //     children: [
+              //       ChatListItem(
+              //         icon: FontAwesomeIcons.gavel,
+              //         title: 'Abogados',
+              //         message: 'Hola, necesito un servicio con el Grupo Vista',
+              //         date: '16 de enero de 2022 - 14:56',
+              //         counter: 3,
+              //         userModel: userModel,
+              //       ),
+              //       ChatListItem(
+              //         icon: FontAwesomeIcons.userCog,
+              //         title: 'Ingenieros',
+              //         message: 'Hola, necesito un servicio con el Grupo Vista',
+              //         date: '16 de enero de 2022 - 14:56',
+              //         userModel: userModel,
+              //       ),
+              //       ChatListItem(
+              //           icon: FontAwesomeIcons.handHoldingUsd,
+              //           title: 'Contadores',
+              //           message:
+              //               'Hola, necesito un servicio con el Grupo Vista',
+              //           date: '16 de enero de 2022 - 14:56',
+              //           counter: 5,
+              //           userModel: userModel),
+              //     ],
+              //   ),
+              // ))
             ],
           ),
         ),

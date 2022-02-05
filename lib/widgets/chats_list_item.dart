@@ -59,10 +59,11 @@ class ChatListItem extends StatelessWidget {
                   children: [
                     Text(
                       title!,
+                      // overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
-                          fontSize: 20,
+                          fontSize: 18,
                           color: Colors.white,
-                          fontWeight: FontWeight.w600),
+                          fontWeight: FontWeight.w500),
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5),
