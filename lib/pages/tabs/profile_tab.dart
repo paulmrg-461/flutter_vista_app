@@ -16,7 +16,7 @@ class ProfileTab extends StatelessWidget {
       child: Scaffold(
         backgroundColor: const Color(0xff1B1B1B),
         body: Padding(
-          padding: const EdgeInsets.only(left: 12, right: 12, top: 32),
+          padding: const EdgeInsets.only(left: 12, right: 12, top: 22),
           child: Column(
             children: [
               Row(
@@ -37,7 +37,7 @@ class ProfileTab extends StatelessWidget {
                 ],
               ),
               const SizedBox(
-                height: 40.0,
+                height: 22.0,
               ),
               Row(
                 children: [
