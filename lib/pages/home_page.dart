@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grupo_vista_app/models/user_model.dart';
 import 'package:grupo_vista_app/pages/tabs/chats_tab.dart';
-import 'package:grupo_vista_app/pages/tabs/notifications_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/profile_tab.dart';
 import 'package:grupo_vista_app/pages/tabs/services_tab.dart';
 import 'package:grupo_vista_app/providers/user_provider.dart';
@@ -82,13 +81,6 @@ class _HomePageState extends State<HomePage> {
           textAlign: TextAlign.center,
         ),
         BottomNavyBarItem(
-          icon: const Icon(Icons.notifications),
-          title: const Text('Notificaciones'),
-          activeColor: _activeColor,
-          inactiveColor: _inactiveColor,
-          textAlign: TextAlign.center,
-        ),
-        BottomNavyBarItem(
           icon: const Icon(Icons.person),
           title: const Text('Perfil'),
           activeColor: _activeColor,
@@ -103,7 +95,6 @@ class _HomePageState extends State<HomePage> {
     List<Widget> pages = [
       ServicesTab(userModel: _userModel),
       ChatsTab(userModel: _userModel),
-      const NotificationsTab(),
       ProfileTab(
         userModel: _userModel,
       )

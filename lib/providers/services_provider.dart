@@ -14,6 +14,7 @@ class ServicesProvider {
             'dateTime': DateTime.now(),
             'name': userModel.clientName,
             'email': userModel.clientEmail,
+            'photoUrl': userModel.clientPhotoURL,
             'type': type
           })
           .then((value) => true)

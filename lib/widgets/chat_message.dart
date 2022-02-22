@@ -2,27 +2,19 @@ import 'package:flutter/material.dart';
 
 class ChatMessage extends StatelessWidget {
   final String? text;
-  final String? uid;
-  final AnimationController? animationController;
-
+  final bool? isProfessional;
+  final String? date;
   const ChatMessage(
       {Key? key,
       @required this.text,
-      @required this.uid,
-      @required this.animationController})
+      @required this.isProfessional,
+      @required this.date})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FadeTransition(
-      opacity: animationController!,
-      child: SizeTransition(
-        sizeFactor: CurvedAnimation(
-            parent: animationController!, curve: Curves.easeOut),
-        child: Container(
-          child: uid == '123' ? _myMessage() : _notMyChatMessage(),
-        ),
-      ),
+    return Container(
+      child: isProfessional! ? _notMyChatMessage() : _myMessage(),
     );
   }
 
@@ -34,16 +26,34 @@ class ChatMessage extends StatelessWidget {
             const EdgeInsets.only(right: 22.0, left: 48, top: 2.0, bottom: 6.0),
         padding: const EdgeInsets.all(10.0),
         decoration: const BoxDecoration(
-            color: Color(0xffE5AB50),
+            color: Color(0xff997124),
             borderRadius: BorderRadius.only(
               bottomLeft: Radius.circular(14),
               topLeft: Radius.circular(14),
               bottomRight: Radius.circular(14),
             )),
-        child: Text(
-          text!,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [
+            Text(
+              text!,
+              textAlign: TextAlign.justify,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              date!,
+              style: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400),
+            ),
+          ],
         ),
       ),
     );
@@ -63,10 +73,29 @@ class ChatMessage extends StatelessWidget {
               bottomLeft: Radius.circular(14),
               topRight: Radius.circular(14),
             )),
-        child: Text(
-          text!,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              text!,
+              textAlign: TextAlign.justify,
+              style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                  fontWeight: FontWeight.w400),
+            ),
+            const SizedBox(
+              height: 4,
+            ),
+            Text(
+              date!,
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  color: Colors.white.withOpacity(0.5),
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400),
+            ),
+          ],
         ),
       ),
     );

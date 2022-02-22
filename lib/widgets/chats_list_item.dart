@@ -1,23 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:grupo_vista_app/models/message_model.dart';
 import 'package:grupo_vista_app/models/user_model.dart';
 import 'package:grupo_vista_app/pages/chat_page.dart';
 
 class ChatListItem extends StatelessWidget {
-  final IconData? icon;
-  final String? title;
-  final String? message;
-  final String? date;
-  final int? counter;
+  final MessageModel? messageModel;
   final UserModel? userModel;
   const ChatListItem(
-      {Key? key,
-      @required this.icon,
-      @required this.title,
-      @required this.message,
-      @required this.date,
-      this.counter = 0,
-      @required this.userModel})
+      {Key? key, @required this.messageModel, @required this.userModel})
       : super(key: key);
 
   @override
@@ -28,28 +18,22 @@ class ChatListItem extends StatelessWidget {
         onTap: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ChatPage(
-                title: title,
-                icon: icon,
-                receiverEmail: 'nestor.botina@grupovista.co',
-                userModel: userModel,
-              ),
+              builder: (context) =>
+                  ChatPage(userModel: userModel, messageModel: messageModel),
             )),
         child: Row(
           children: [
             Container(
-              width: 70,
-              height: 70,
-              decoration: const BoxDecoration(
-                color: Color(0xffD6BA5E),
-                shape: BoxShape.circle,
-              ),
-              child: Center(
-                  child: FaIcon(
-                icon!,
-                size: 42,
-                color: const Color(0xff211915),
-              )),
+              width: 75,
+              height: 75,
+              decoration: BoxDecoration(
+                  color: const Color(0xffD6BA5E),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white, width: 4.0),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image:
+                          NetworkImage(messageModel!.professionalPhotoUrl!))),
             ),
             Expanded(
               child: Padding(
@@ -58,18 +42,30 @@ class ChatListItem extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      title!,
+                      messageModel!.professionalName!,
                       // overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.w500),
                     ),
+                    const SizedBox(
+                      height: 4,
+                    ),
+                    Text(
+                      'Servicio de ${messageModel!.type!}',
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: Colors.white.withOpacity(0.85),
+                          fontWeight: FontWeight.w400),
+                    ),
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Text(
-                        message!,
+                        messageModel!.message!,
                         overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                         style: TextStyle(
                             fontSize: 16,
                             color: Colors.white.withOpacity(0.85),
@@ -77,7 +73,7 @@ class ChatListItem extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      date!,
+                      '${messageModel!.date!.day.toString().padLeft(2, '0')}/${messageModel!.date!.month.toString().padLeft(2, '0')}/${messageModel!.date!.year.toString()} - ${messageModel!.date!.hour.toString().padLeft(2, '0')}:${messageModel!.date!.minute.toString().padLeft(2, '0')}',
                       style: TextStyle(
                           fontSize: 14,
                           color: Colors.white.withOpacity(0.85),
@@ -87,7 +83,7 @@ class ChatListItem extends StatelessWidget {
                 ),
               ),
             ),
-            counter == 0
+            messageModel!.seen!
                 ? Container()
                 : Container(
                     width: 30,
@@ -96,10 +92,10 @@ class ChatListItem extends StatelessWidget {
                       color: Color(0xffD6BA5E),
                       shape: BoxShape.circle,
                     ),
-                    child: Center(
+                    child: const Center(
                         child: Text(
-                      '$counter',
-                      style: const TextStyle(
+                      '1',
+                      style: TextStyle(
                           fontSize: 18,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),

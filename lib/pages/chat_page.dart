@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -9,17 +10,13 @@ import 'package:grupo_vista_app/providers/messages_provider.dart';
 import 'package:grupo_vista_app/widgets/chat_message.dart';
 
 class ChatPage extends StatefulWidget {
-  final String? title;
-  final IconData? icon;
-  final String? receiverEmail;
   final UserModel? userModel;
-  const ChatPage(
-      {Key? key,
-      @required this.title,
-      @required this.icon,
-      @required this.receiverEmail,
-      @required this.userModel})
-      : super(key: key);
+  final MessageModel? messageModel;
+  const ChatPage({
+    Key? key,
+    @required this.userModel,
+    @required this.messageModel,
+  }) : super(key: key);
 
   @override
   _ChatPageState createState() => _ChatPageState();
@@ -29,8 +26,6 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
   bool _isWriting = false;
-
-  final List<ChatMessage> _messages = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +37,83 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
           children: [
             _myAppBar(),
             Flexible(
-                child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: _messages.length,
-              itemBuilder: (_, i) => _messages[i],
-              reverse: true,
-            )),
+              child: StreamBuilder<QuerySnapshot<MessageModel>>(
+                stream:
+                    MessagesProvider.getChatroomMessages(widget.messageModel!),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot<MessageModel>> snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(horizontal: 22),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: Colors.white10,
+                            borderRadius: BorderRadius.circular(22)),
+                        child: const Text(
+                            'Ha ocurrido un error al cargar los mensajes. Por favor intenta nuevamente.',
+                            textAlign: TextAlign.justify,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400)),
+                      ),
+                    );
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0xffD6BA5E),
+                      ),
+                    );
+                  }
+
+                  if (snapshot.hasData) {
+                    final List<ChatMessage> messagesList = snapshot.data!.docs
+                        .map((DocumentSnapshot<MessageModel> document) {
+                      MessageModel msg = document.data()!;
+                      print(msg.message);
+                      return ChatMessage(
+                          text: msg.message,
+                          isProfessional: msg.isProfessional,
+                          date:
+                              '${msg.date!.day.toString().padLeft(2, '0')}/${msg.date!.month.toString().padLeft(2, '0')}/${msg.date!.year.toString()} - ${msg.date!.hour.toString().padLeft(2, '0')}:${msg.date!.minute.toString().padLeft(2, '0')}');
+                    }).toList();
+
+                    if (messagesList.isEmpty) {
+                      return Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.symmetric(
+                            horizontal: 22, vertical: 36),
+                        padding: const EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                            color: Colors.white10,
+                            borderRadius: BorderRadius.circular(22)),
+                        child:
+                            const Text('No hay mensajes disponibles este chat.',
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 22,
+                                    // letterSpacing: 0.4,
+                                    fontWeight: FontWeight.w400)),
+                      );
+                    } else {
+                      return ListView(
+                          physics: const BouncingScrollPhysics(),
+                          reverse: true,
+                          children: messagesList);
+                    }
+                  }
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xffD6BA5E),
+                    ),
+                  );
+                },
+              ),
+            ),
             const Divider(
               height: 1,
             ),
@@ -74,16 +140,13 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             width: 55,
             height: 55,
             margin: const EdgeInsets.only(left: 8),
-            decoration: const BoxDecoration(
-              color: Color(0xffD6BA5E),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-                child: FaIcon(
-              widget.icon!,
-              size: 34,
-              color: const Color(0xff211915),
-            )),
+            decoration: BoxDecoration(
+                color: const Color(0xffD6BA5E),
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white, width: 4.0),
+                image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: NetworkImage(widget.messageModel!.userPhotoUrl!))),
           ),
           Expanded(
             child: Padding(
@@ -92,36 +155,43 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.title!,
+                    widget.messageModel!.professionalName!,
                     style: const TextStyle(
                         fontSize: 18,
                         color: Colors.white,
                         fontWeight: FontWeight.w600),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 6),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 12,
-                          height: 12,
-                          decoration: BoxDecoration(
-                              color: Colors.green.withOpacity(0.8),
-                              shape: BoxShape.circle),
-                        ),
-                        const SizedBox(
-                          width: 6,
-                        ),
-                        Text(
-                          'Activo ahora',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.white.withOpacity(0.85),
-                              fontWeight: FontWeight.w400),
-                        ),
-                      ],
-                    ),
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Text(
+                        'Servicio de ${widget.messageModel!.type}',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white.withOpacity(0.85),
+                            fontWeight: FontWeight.w400),
+                      )),
+                  Row(
+                    children: [
+                      Container(
+                        width: 12,
+                        height: 12,
+                        decoration: BoxDecoration(
+                            color: Colors.green.withOpacity(0.8),
+                            shape: BoxShape.circle),
+                      ),
+                      const SizedBox(
+                        width: 6,
+                      ),
+                      Text(
+                        'Activo ahora',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white.withOpacity(0.85),
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -228,36 +298,41 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
     _focusNode.requestFocus();
 
     MessageModel messageModel = MessageModel(
-        title: 'Tienes un mensaje de ${widget.userModel!.clientName}',
-        body: text,
+        userName: widget.messageModel!.userName,
+        professionalName: widget.messageModel!.professionalName,
+        userEmail: widget.messageModel!.userEmail,
+        professionalEmail: widget.messageModel!.professionalEmail,
+        userPhotoUrl: widget.messageModel!.userPhotoUrl,
+        professionalPhotoUrl: widget.messageModel!.professionalPhotoUrl,
+        message: text,
         isProfessional: false,
-        photoUrl: widget.userModel!.clientPhotoURL,
         seen: false,
-        type: widget.title,
+        type: widget.messageModel!.type,
         senderId: widget.userModel!.clientEmail,
-        receiverId: widget.receiverEmail);
+        date: DateTime.now(),
+        receiverId: widget.messageModel!.professionalEmail);
     MessagesProvider.sendNewMessage(messageModel);
 
-    final newMessage = ChatMessage(
-      uid: '123',
-      text: text,
-      animationController: AnimationController(
-          vsync: this, duration: const Duration(milliseconds: 300)),
-    );
-    _messages.insert(0, newMessage);
-    newMessage.animationController!.forward();
+    // final newMessage = ChatMessage(
+    //   uid: '123',
+    //   text: text,
+    //   animationController: AnimationController(
+    //       vsync: this, duration: const Duration(milliseconds: 300)),
+    // );
+    // _messages.insert(0, newMessage);
+    // newMessage.animationController!.forward();
 
     setState(() {
       _isWriting = false;
     });
   }
 
-  @override
-  void dispose() {
-    // TODO: Socket OFF
-    for (ChatMessage message in _messages) {
-      message.animationController!.dispose();
-    }
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // TODO: Socket OFF
+  //   for (ChatMessage message in _messages) {
+  //     message.animationController!.dispose();
+  //   }
+  //   super.dispose();
+  // }
 }
