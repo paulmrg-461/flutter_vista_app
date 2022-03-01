@@ -31,7 +31,6 @@ class UserProvider with ChangeNotifier {
       messaging = FirebaseMessaging.instance;
       messaging.getToken().then((value) {
         _setFCMToken(value);
-        print('FCMToken: $value');
         users
             .doc(_userCredentials!.user!.email)
             .update({
@@ -70,10 +69,10 @@ class UserProvider with ChangeNotifier {
       messaging = FirebaseMessaging.instance;
       messaging.getToken().then((value) {
         _setFCMToken(value);
-        print('FCMToken: $value');
         users
             .doc(_userCredentials!.user!.email)
             .set({
+              'clientUid': _userCredentials!.user!.uid,
               'clientName': name,
               'clientEmail': email,
               'clientPhotoURL':
@@ -130,6 +129,7 @@ class UserProvider with ChangeNotifier {
               ? users
                   .doc(_userCredentials!.user!.email)
                   .set({
+                    'clientUid': _userCredentials!.user!.uid,
                     'clientName': user!.displayName,
                     'clientEmail': user.email,
                     'clientPhotoURL': user.photoURL,

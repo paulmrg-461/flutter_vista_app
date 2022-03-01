@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
+  final String? clientUid;
   final String? clientEmail;
   final String? clientName;
   final bool? clientEnable;
@@ -10,6 +11,7 @@ class UserModel {
   final List<dynamic>? deviceTokens;
 
   UserModel({
+    this.clientUid,
     this.clientEmail,
     this.clientName,
     this.clientEnable,
@@ -21,6 +23,8 @@ class UserModel {
 
   UserModel.fromJson(Map<String, Object?> json)
       : this(
+          clientUid:
+              (json['clientUid'] != null) ? json['clientUid']! as String : '',
           clientEmail: (json['clientEmail'] != null)
               ? json['clientEmail']! as String
               : '',
@@ -40,6 +44,7 @@ class UserModel {
         );
   Map<String, Object?> toJson() {
     return {
+      'clientUid': clientUid,
       'clientEmail': clientEmail,
       'clientName': clientName,
       'clientEnable': clientEnable,
