@@ -107,11 +107,11 @@ class IconHeader extends StatelessWidget {
       children: [
         _IconHeaderBackground(color1: color1!, color2: color2!),
         Positioned(
-          top: -50,
-          left: -70,
+          top: MediaQuery.of(context).size.height * -0.075,
+          left: MediaQuery.of(context).size.width * -0.125,
           child: FaIcon(
             icon!,
-            size: 250.0,
+            size: MediaQuery.of(context).size.height * 0.275,
             color: Colors.white.withOpacity(0.2),
           ),
         ),
@@ -125,21 +125,21 @@ class IconHeader extends StatelessWidget {
               subtitle!,
               style: TextStyle(fontSize: 22, color: whiteColor),
             ),
-            const SizedBox(
-              height: 16.0,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
             ),
             Text(
               title!,
               style: TextStyle(
                   fontSize: 32, color: whiteColor, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(
-              height: 18.0,
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.014,
             ),
             SvgPicture.asset(
               'assets/icons/logo_grupo_vista_black.svg',
               semanticsLabel: 'Logo Grupo Vista',
-              height: MediaQuery.of(context).size.height * 0.12,
+              height: MediaQuery.of(context).size.height * 0.11,
             )
           ],
         )
