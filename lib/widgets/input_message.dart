@@ -25,89 +25,197 @@ class _InputMessageState extends State<InputMessage>
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
   bool _isWriting = false;
+  bool _isChoosing = false;
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Container(
-      decoration: BoxDecoration(
-          color: const Color(0xff312923),
-          borderRadius: BorderRadius.circular(36),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                offset: const Offset(0, 5),
-                blurRadius: 5)
-          ]),
-      margin:
-          const EdgeInsets.only(left: 20.0, right: 20.0, bottom: 20, top: 8),
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
-      child: Row(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(right: 6.0),
-            child: IconTheme(
-              data: const IconThemeData(color: Colors.white),
-              child: IconButton(
-                  icon: Icon(
-                    Icons.attachment_rounded,
-                    color: _isWriting
-                        ? Colors.white
-                        : Colors.white.withOpacity(0.3),
-                    size: 28,
-                  ),
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onPressed: _isWriting
-                      ? () => _handleSubmit(_textController.text.trim())
-                      : null),
-            ),
-          ),
-          Flexible(
-              child: TextField(
-            style: const TextStyle(color: Colors.white, fontSize: 18),
-            controller: _textController,
-            onSubmitted: _handleSubmit,
-            textCapitalization: TextCapitalization.sentences,
-            onChanged: (String text) {
-              setState(() {
-                _isWriting = (text.trim().isNotEmpty) ? true : false;
-              });
-            },
-            decoration: const InputDecoration.collapsed(
-                hintText: 'Enviar mensaje...',
-                hintStyle: TextStyle(color: Colors.white54)),
-            focusNode: _focusNode,
-          )),
+        child: _isChoosing
+            ? Container(
+                width: double.infinity,
+                margin: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, bottom: 20, top: 8),
+                padding: const EdgeInsets.all(18),
+                decoration: BoxDecoration(
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.75),
+                          offset: const Offset(5, 7),
+                          blurRadius: 20.0)
+                    ],
+                    color: const Color(0xff312923),
+                    borderRadius: BorderRadius.circular(22)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () =>
+                                setState(() => _isChoosing = false),
+                            icon: FaIcon(
+                              FontAwesomeIcons.camera,
+                              color: Colors.white70,
+                              size: 38,
+                            )),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Text('Camera',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400))
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () => print('Gallery'),
+                            icon: FaIcon(
+                              FontAwesomeIcons.photoVideo,
+                              color: Colors.white70,
+                              size: 38,
+                            )),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Text('Gallery',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400))
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () => print('File'),
+                            icon: FaIcon(
+                              FontAwesomeIcons.file,
+                              color: Colors.white70,
+                              size: 38,
+                            )),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Text('File',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400))
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        IconButton(
+                            onPressed: () => print('Microphone'),
+                            icon: FaIcon(
+                              FontAwesomeIcons.microphone,
+                              color: Colors.white70,
+                              size: 38,
+                            )),
+                        const SizedBox(
+                          height: 6,
+                        ),
+                        Text('Record',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400))
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                    color: const Color(0xff312923),
+                    borderRadius: BorderRadius.circular(36),
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          offset: const Offset(0, 5),
+                          blurRadius: 5)
+                    ]),
+                margin: const EdgeInsets.only(
+                    left: 20.0, right: 20.0, bottom: 20, top: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 14, vertical: 2),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 6.0),
+                      child: IconTheme(
+                        data: const IconThemeData(color: Colors.white),
+                        child: IconButton(
+                            icon: Icon(
+                              Icons.attachment_rounded,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                            splashColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onPressed: () =>
+                                setState(() => _isChoosing = true)),
+                      ),
+                    ),
+                    Flexible(
+                        child: TextField(
+                      style: const TextStyle(color: Colors.white, fontSize: 18),
+                      controller: _textController,
+                      onSubmitted: _handleSubmit,
+                      textCapitalization: TextCapitalization.sentences,
+                      onChanged: (String text) {
+                        setState(() {
+                          _isWriting = (text.trim().isNotEmpty) ? true : false;
+                        });
+                      },
+                      decoration: const InputDecoration.collapsed(
+                          hintText: 'Enviar mensaje...',
+                          hintStyle: TextStyle(color: Colors.white54)),
+                      focusNode: _focusNode,
+                    )),
 
-          //Send button
-          Container(
-              margin: const EdgeInsets.only(left: 4.0),
-              child: Platform.isIOS
-                  ? CupertinoButton(
-                      child: const Text('Enviar'),
-                      onPressed: _isWriting
-                          ? () => _handleSubmit(_textController.text.trim())
-                          : null)
-                  : IconTheme(
-                      data: const IconThemeData(color: Color(0xffD6BA5E)),
-                      child: IconButton(
-                          icon: FaIcon(
-                            FontAwesomeIcons.paperPlane,
-                            color: _isWriting
-                                ? const Color(0xffD6BA5E)
-                                : Colors.white.withOpacity(0.3),
-                            size: 26,
-                          ),
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          onPressed: _isWriting
-                              ? () => _handleSubmit(_textController.text.trim())
-                              : null),
-                    ))
-        ],
-      ),
-    ));
+                    //Send button
+                    Container(
+                        margin: const EdgeInsets.only(left: 4.0),
+                        child: Platform.isIOS
+                            ? CupertinoButton(
+                                child: const Text('Enviar'),
+                                onPressed: _isWriting
+                                    ? () => _handleSubmit(
+                                        _textController.text.trim())
+                                    : null)
+                            : IconTheme(
+                                data: const IconThemeData(
+                                    color: Color(0xffD6BA5E)),
+                                child: IconButton(
+                                    icon: FaIcon(
+                                      FontAwesomeIcons.paperPlane,
+                                      color: _isWriting
+                                          ? const Color(0xffD6BA5E)
+                                          : Colors.white.withOpacity(0.3),
+                                      size: 26,
+                                    ),
+                                    splashColor: Colors.transparent,
+                                    highlightColor: Colors.transparent,
+                                    onPressed: _isWriting
+                                        ? () => _handleSubmit(
+                                            _textController.text.trim())
+                                        : null),
+                              ))
+                  ],
+                ),
+              ));
   }
 
   _handleSubmit(String text) {

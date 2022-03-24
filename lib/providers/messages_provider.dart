@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:grupo_vista_app/models/message_model.dart';
 import 'package:grupo_vista_app/models/professional_model.dart';
 import 'package:grupo_vista_app/models/user_model.dart';
 
 class MessagesProvider {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
   static CollectionReference messages =
       FirebaseFirestore.instance.collection('messages');
   static CollectionReference professionals =
