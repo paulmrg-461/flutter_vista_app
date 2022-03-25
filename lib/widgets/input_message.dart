@@ -1,8 +1,9 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grupo_vista_app/models/message_model.dart';
 import 'package:grupo_vista_app/models/user_model.dart';
@@ -79,7 +80,7 @@ class _InputMessageState extends State<InputMessage>
                             children: [
                               IconButton(
                                   onPressed: () =>
-                                      _uploadAttachment(['jpg'], 'Imagen'),
+                                      _takePicture('Imagen tomada'),
                                   icon: FaIcon(
                                     FontAwesomeIcons.camera,
                                     color: Colors.white70,
@@ -251,20 +252,8 @@ class _InputMessageState extends State<InputMessage>
 
     _textController.clear();
     _focusNode.requestFocus();
-    MessageModel messageModel = MessageModel(
-        userName: widget.messageModel!.userName,
-        professionalName: widget.messageModel!.professionalName,
-        userEmail: widget.messageModel!.userEmail,
-        professionalEmail: widget.messageModel!.professionalEmail,
-        userPhotoUrl: widget.messageModel!.userPhotoUrl,
-        professionalPhotoUrl: widget.messageModel!.professionalPhotoUrl,
-        message: text,
-        isProfessional: false,
-        seen: false,
-        type: widget.messageModel!.type,
-        senderId: widget.userModel!.clientEmail,
-        date: DateTime.now(),
-        receiverId: widget.messageModel!.professionalEmail);
+
+    MessageModel messageModel = _createMessageModel(text, '');
     MessagesProvider.sendNewMessage(messageModel);
     // final newMessage = ChatMessage(
     //   uid: '123',
@@ -295,7 +284,48 @@ class _InputMessageState extends State<InputMessage>
       final String downloadUrl = await MessagesProvider.uploadFile(file,
           'messages/${widget.userModel!.clientEmail}/${DateTime.now()}.$fileExtension');
 
-      MessageModel messageModel = MessageModel(
+      MessageModel messageModel = _createMessageModel(message, downloadUrl);
+      MessagesProvider.sendNewMessage(messageModel);
+      setState(() {
+        _isLoading = false;
+        _isChoosing = false;
+      });
+    } else {
+      // User canceled the picker
+      setState(() {
+        _isChoosing = false;
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _takePicture(String message) async {
+    setState(() => _isLoading = true);
+    final ImagePicker picker = ImagePicker();
+
+    try {
+      final XFile? pickedImage = await picker.pickImage(
+          source: ImageSource.camera,
+          imageQuality: 75,
+          maxWidth: 1280,
+          maxHeight: 720);
+      File file = File(pickedImage!.path);
+      final String downloadUrl = await MessagesProvider.uploadFile(
+          file, 'messages/${widget.userModel!.clientEmail}/${DateTime.now()}');
+
+      MessageModel messageModel = _createMessageModel(message, downloadUrl);
+      MessagesProvider.sendNewMessage(messageModel);
+      setState(() {
+        _isLoading = false;
+        _isChoosing = false;
+      });
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  MessageModel _createMessageModel(String message, String downloadUrl) =>
+      MessageModel(
           userName: widget.messageModel!.userName,
           professionalName: widget.messageModel!.professionalName,
           userEmail: widget.messageModel!.userEmail,
@@ -310,19 +340,6 @@ class _InputMessageState extends State<InputMessage>
           senderId: widget.userModel!.clientEmail,
           date: DateTime.now(),
           receiverId: widget.messageModel!.professionalEmail);
-      MessagesProvider.sendNewMessage(messageModel);
-      setState(() {
-        _isLoading = false;
-        _isChoosing = false;
-      });
-    } else {
-      // User canceled the picker
-      setState(() {
-        _isChoosing = false;
-        _isLoading = false;
-      });
-    }
-  }
 
   @override
   void dispose() {
