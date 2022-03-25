@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -52,8 +53,7 @@ class _InputMessageState extends State<InputMessage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         IconButton(
-                            onPressed: () =>
-                                setState(() => _isChoosing = false),
+                            onPressed: () => _uploadAttachment(['jpg']),
                             icon: FaIcon(
                               FontAwesomeIcons.camera,
                               color: Colors.white70,
@@ -74,7 +74,7 @@ class _InputMessageState extends State<InputMessage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         IconButton(
-                            onPressed: () => print('Gallery'),
+                            onPressed: () => _uploadAttachment(['jpg']),
                             icon: FaIcon(
                               FontAwesomeIcons.photoVideo,
                               color: Colors.white70,
@@ -95,7 +95,7 @@ class _InputMessageState extends State<InputMessage>
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         IconButton(
-                            onPressed: () => print('File'),
+                            onPressed: () => _uploadAttachment(['pdf', 'doc']),
                             icon: FaIcon(
                               FontAwesomeIcons.file,
                               color: Colors.white70,
@@ -250,6 +250,23 @@ class _InputMessageState extends State<InputMessage>
     setState(() {
       _isWriting = false;
     });
+  }
+
+  Future<void> _uploadAttachment(List<String> fileTypes) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: fileTypes,
+    );
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      String fileExtension = result.files.single.extension!;
+      MessagesProvider.uploadFile(file,
+              'messages/${widget.userModel!.clientEmail}/${DateTime.now()}.$fileExtension')
+          .then((value) => setState(() => _isChoosing = false));
+    } else {
+      // User canceled the picker
+      setState(() => _isChoosing = false);
+    }
   }
 
   @override
