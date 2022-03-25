@@ -58,23 +58,15 @@ class MessagesProvider {
       .collection('userMessages')
       .add(messageModel.toJson());
 
-  static Future<void> uploadFile(File file, String path) async {
+  static Future<String> uploadFile(File file, String path) async {
     try {
       final firebase_storage.TaskSnapshot taskSnapshot =
           await storage.ref(path).putFile(file);
-      // final firebase_storage.Reference reference =
-      //     await firebase_storage.FirebaseStorage.instance.ref(path);
-      // reference.putFile(file);\
 
-      String downloadUrl = await taskSnapshot.ref.getDownloadURL();
-      // String downloadUrl = await firebase_storage.FirebaseStorage.instance
-      //     .ref(path)
-      //     .getDownloadURL();
-
-      print(downloadUrl);
+      return await taskSnapshot.ref.getDownloadURL();
     } on FirebaseException catch (e) {
-      // e.g, e.code == 'canceled'
       print(e);
+      return 'Error';
     }
   }
 }

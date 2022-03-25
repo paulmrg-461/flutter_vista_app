@@ -25,6 +25,7 @@ class _InputMessageState extends State<InputMessage>
     with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
+  bool _isLoading = false;
   bool _isWriting = false;
   bool _isChoosing = false;
 
@@ -46,95 +47,122 @@ class _InputMessageState extends State<InputMessage>
                     ],
                     color: const Color(0xff312923),
                     borderRadius: BorderRadius.circular(22)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () => _uploadAttachment(['jpg']),
-                            icon: FaIcon(
-                              FontAwesomeIcons.camera,
-                              color: Colors.white70,
-                              size: 38,
-                            )),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Text('Camera',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400))
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () => _uploadAttachment(['jpg']),
-                            icon: FaIcon(
-                              FontAwesomeIcons.photoVideo,
-                              color: Colors.white70,
-                              size: 38,
-                            )),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Text('Gallery',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400))
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () => _uploadAttachment(['pdf', 'doc']),
-                            icon: FaIcon(
-                              FontAwesomeIcons.file,
-                              color: Colors.white70,
-                              size: 38,
-                            )),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Text('File',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400))
-                      ],
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        IconButton(
-                            onPressed: () => print('Microphone'),
-                            icon: FaIcon(
-                              FontAwesomeIcons.microphone,
-                              color: Colors.white70,
-                              size: 38,
-                            )),
-                        const SizedBox(
-                          height: 6,
-                        ),
-                        Text('Record',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400))
-                      ],
-                    ),
-                  ],
-                ),
+                child: _isLoading
+                    ? Center(child: CircularProgressIndicator.adaptive())
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () =>
+                                      setState(() => _isChoosing = false),
+                                  icon: Icon(
+                                    Icons.close,
+                                    color: Colors.white70,
+                                    size: 34,
+                                  )),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Text('Cancelar',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400))
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () =>
+                                      _uploadAttachment(['jpg'], 'Imagen'),
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.camera,
+                                    color: Colors.white70,
+                                    size: 34,
+                                  )),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Text('Camera',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400))
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () =>
+                                      _uploadAttachment(['jpg'], 'Imagen'),
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.photoVideo,
+                                    color: Colors.white70,
+                                    size: 34,
+                                  )),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Text('Gallery',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400))
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () => _uploadAttachment(
+                                      ['pdf', 'doc'], 'Documento'),
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.file,
+                                    color: Colors.white70,
+                                    size: 34,
+                                  )),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Text('File',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400))
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                  onPressed: () => print('Microphone'),
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.microphone,
+                                    color: Colors.white70,
+                                    size: 34,
+                                  )),
+                              const SizedBox(
+                                height: 6,
+                              ),
+                              Text('Record',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400))
+                            ],
+                          ),
+                        ],
+                      ),
               )
             : Container(
                 decoration: BoxDecoration(
@@ -252,20 +280,47 @@ class _InputMessageState extends State<InputMessage>
     });
   }
 
-  Future<void> _uploadAttachment(List<String> fileTypes) async {
+  Future<void> _uploadAttachment(List<String> fileTypes, String message) async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: fileTypes,
     );
+
+    setState(() => _isLoading = true);
+
     if (result != null) {
       File file = File(result.files.single.path!);
       String fileExtension = result.files.single.extension!;
-      MessagesProvider.uploadFile(file,
-              'messages/${widget.userModel!.clientEmail}/${DateTime.now()}.$fileExtension')
-          .then((value) => setState(() => _isChoosing = false));
+
+      final String downloadUrl = await MessagesProvider.uploadFile(file,
+          'messages/${widget.userModel!.clientEmail}/${DateTime.now()}.$fileExtension');
+
+      MessageModel messageModel = MessageModel(
+          userName: widget.messageModel!.userName,
+          professionalName: widget.messageModel!.professionalName,
+          userEmail: widget.messageModel!.userEmail,
+          professionalEmail: widget.messageModel!.professionalEmail,
+          userPhotoUrl: widget.messageModel!.userPhotoUrl,
+          downloadUrl: downloadUrl,
+          professionalPhotoUrl: widget.messageModel!.professionalPhotoUrl,
+          message: message,
+          isProfessional: false,
+          seen: false,
+          type: widget.messageModel!.type,
+          senderId: widget.userModel!.clientEmail,
+          date: DateTime.now(),
+          receiverId: widget.messageModel!.professionalEmail);
+      MessagesProvider.sendNewMessage(messageModel);
+      setState(() {
+        _isLoading = false;
+        _isChoosing = false;
+      });
     } else {
       // User canceled the picker
-      setState(() => _isChoosing = false);
+      setState(() {
+        _isChoosing = false;
+        _isLoading = false;
+      });
     }
   }
 
