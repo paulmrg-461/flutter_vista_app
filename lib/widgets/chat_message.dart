@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:grupo_vista_app/widgets/custom_alert_dialog.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatMessage extends StatelessWidget {
@@ -70,17 +71,22 @@ class ChatMessage extends StatelessWidget {
                               onTap: () => _downloadUrl(context, downloadUrl!),
                               child: Image(image: NetworkImage(downloadUrl!))),
                         )
-                      : Container(
-                          child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: InkWell(
-                              onTap: () => _downloadUrl(context, downloadUrl!),
-                              child: Icon(
-                                Icons.download_for_offline_outlined,
-                                color: Colors.white60,
-                                size: 72,
-                              )),
-                        )),
+                      : text == 'Audio'
+                          ? AudioPlayerWidget(
+                              downloadUrl: downloadUrl!,
+                            )
+                          : Container(
+                              child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: InkWell(
+                                  onTap: () =>
+                                      _downloadUrl(context, downloadUrl!),
+                                  child: Icon(
+                                    Icons.download_for_offline_outlined,
+                                    color: Colors.white60,
+                                    size: 72,
+                                  )),
+                            )),
                   Text(
                     text,
                     textAlign: TextAlign.justify,
@@ -201,6 +207,70 @@ class ChatMessage extends StatelessWidget {
           context,
           'Error al descargar',
           'Ha ocurrido un errror al descargar el archivo. Por favor intente nuevamente.',
+          'Aceptar');
+    }
+  }
+}
+
+class AudioPlayerWidget extends StatefulWidget {
+  final String downloadUrl;
+  AudioPlayerWidget({Key? key, required this.downloadUrl}) : super(key: key);
+
+  @override
+  State<AudioPlayerWidget> createState() => _AudioPlayerWidgetState();
+}
+
+class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
+  late AudioPlayer player;
+  bool _isPlaying = false;
+
+  @override
+  void initState() {
+    super.initState();
+    player = AudioPlayer();
+  }
+
+  @override
+  void dispose() {
+    player.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 18, right: 18),
+        child: IconButton(
+          onPressed: () => _playAudio(context, widget.downloadUrl),
+          icon: Icon(
+            _isPlaying ? Icons.pause : Icons.play_arrow_rounded,
+            color: _isPlaying ? Colors.green : Colors.white70,
+            size: 60,
+          ),
+        ),
+      ),
+    ));
+  }
+
+  Future<void> _playAudio(BuildContext context, String url) async {
+    try {
+      if (_isPlaying) {
+        setState(() => _isPlaying = false);
+        await player.pause();
+      } else {
+        setState(() => _isPlaying = true);
+        await player.setUrl(url).then((value) => player.play());
+        setState(() => _isPlaying = false);
+      }
+    } catch (e) {
+      print(e);
+      CustomAlertDialog().showCustomDialog(
+          context,
+          'Error al escuchar audio',
+          'Ha ocurrido un errror al escuchar el audio. Por favor intente nuevamente.',
           'Aceptar');
     }
   }

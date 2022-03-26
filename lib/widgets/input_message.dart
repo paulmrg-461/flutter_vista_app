@@ -8,6 +8,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:grupo_vista_app/models/message_model.dart';
 import 'package:grupo_vista_app/models/user_model.dart';
 import 'package:grupo_vista_app/providers/messages_provider.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
 
 class InputMessage extends StatefulWidget {
   final UserModel? userModel;
@@ -26,6 +28,7 @@ class _InputMessageState extends State<InputMessage>
     with TickerProviderStateMixin {
   final _textController = TextEditingController();
   final _focusNode = FocusNode();
+  Record record = Record();
   bool _isLoading = false;
   bool _isWriting = false;
   bool _isChoosing = false;
@@ -149,12 +152,9 @@ class _InputMessageState extends State<InputMessage>
                                 padding:
                                     EdgeInsets.only(top: _isRecording ? 2 : 10),
                                 child: GestureDetector(
-                                    onLongPress: () => setState(() {
-                                          _isRecording = true;
-                                        }),
-                                    onLongPressUp: () => setState(() {
-                                          _isRecording = false;
-                                        }),
+                                    onLongPress: () => _recordAudio(),
+                                    onLongPressUp: () =>
+                                        _stopRecording('Audio'),
                                     child: FaIcon(
                                       FontAwesomeIcons.microphone,
                                       color: _isRecording
@@ -322,8 +322,8 @@ class _InputMessageState extends State<InputMessage>
           maxWidth: 1280,
           maxHeight: 720);
       File file = File(pickedImage!.path);
-      final String downloadUrl = await MessagesProvider.uploadFile(
-          file, 'messages/${widget.userModel!.clientEmail}/${DateTime.now()}');
+      final String downloadUrl = await MessagesProvider.uploadFile(file,
+          'messages/${widget.userModel!.clientEmail}/${DateTime.now()}.jpg');
 
       MessageModel messageModel = _createMessageModel(message, downloadUrl);
       MessagesProvider.sendNewMessage(messageModel);
@@ -333,6 +333,39 @@ class _InputMessageState extends State<InputMessage>
       });
     } catch (err) {
       print(err);
+    }
+  }
+
+  Future<void> _recordAudio() async {
+    Directory tempDir = await getTemporaryDirectory();
+    String tempPath = tempDir.path;
+    bool result = await record.hasPermission();
+
+    if (result) {
+      setState(() => _isRecording = true);
+      await record.start(
+        path: '$tempPath/myFile.m4a', // required
+        encoder: AudioEncoder.AAC, // by default
+        bitRate: 128000, // by default
+      );
+    }
+  }
+
+  Future<void> _stopRecording(String message) async {
+    setState(() => _isLoading = true);
+    if (_isRecording) {
+      final String? path = await record.stop();
+      File file = File(path!);
+      final String downloadUrl = await MessagesProvider.uploadFile(file,
+          'messages/${widget.userModel!.clientEmail}/${DateTime.now()}.m4a');
+
+      MessageModel messageModel = _createMessageModel(message, downloadUrl);
+      MessagesProvider.sendNewMessage(messageModel);
+      setState(() {
+        _isRecording = false;
+        _isLoading = false;
+      });
+      print(downloadUrl);
     }
   }
 
@@ -355,6 +388,7 @@ class _InputMessageState extends State<InputMessage>
 
   @override
   void dispose() {
+    record.dispose();
     super.dispose();
   }
 }
