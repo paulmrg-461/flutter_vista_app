@@ -365,7 +365,6 @@ class _InputMessageState extends State<InputMessage>
         _isRecording = false;
         _isLoading = false;
       });
-      print(downloadUrl);
     }
   }
 

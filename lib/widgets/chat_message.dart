@@ -74,6 +74,7 @@ class ChatMessage extends StatelessWidget {
                       : text == 'Audio'
                           ? AudioPlayerWidget(
                               downloadUrl: downloadUrl!,
+                              myMessage: true,
                             )
                           : Container(
                               child: Padding(
@@ -162,18 +163,23 @@ class ChatMessage extends StatelessWidget {
                                 child:
                                     Image(image: NetworkImage(downloadUrl!))),
                           )
-                        : Container(
-                            child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: InkWell(
-                                onTap: () =>
-                                    _downloadUrl(context, downloadUrl!),
-                                child: Icon(
-                                  Icons.download_for_offline_outlined,
-                                  color: Colors.white60,
-                                  size: 72,
-                                )),
-                          )),
+                        : text == 'Audio'
+                            ? AudioPlayerWidget(
+                                downloadUrl: downloadUrl!,
+                                myMessage: false,
+                              )
+                            : Container(
+                                child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: InkWell(
+                                    onTap: () =>
+                                        _downloadUrl(context, downloadUrl!),
+                                    child: Icon(
+                                      Icons.download_for_offline_outlined,
+                                      color: Colors.white60,
+                                      size: 72,
+                                    )),
+                              )),
                     Text(
                       text,
                       textAlign: TextAlign.justify,
@@ -214,7 +220,10 @@ class ChatMessage extends StatelessWidget {
 
 class AudioPlayerWidget extends StatefulWidget {
   final String downloadUrl;
-  AudioPlayerWidget({Key? key, required this.downloadUrl}) : super(key: key);
+  final bool myMessage;
+  AudioPlayerWidget(
+      {Key? key, required this.downloadUrl, required this.myMessage})
+      : super(key: key);
 
   @override
   State<AudioPlayerWidget> createState() => _AudioPlayerWidgetState();
@@ -242,12 +251,14 @@ class _AudioPlayerWidgetState extends State<AudioPlayerWidget> {
         child: Padding(
       padding: const EdgeInsets.all(8.0),
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 18, right: 18),
+        padding: widget.myMessage
+            ? const EdgeInsets.only(bottom: 18, right: 18)
+            : const EdgeInsets.only(bottom: 18, left: 18),
         child: IconButton(
           onPressed: () => _playAudio(context, widget.downloadUrl),
           icon: Icon(
-            _isPlaying ? Icons.pause : Icons.play_arrow_rounded,
-            color: _isPlaying ? Colors.green : Colors.white70,
+            _isPlaying ? Icons.pause_rounded : Icons.play_arrow_rounded,
+            color: Colors.white70,
             size: 60,
           ),
         ),
