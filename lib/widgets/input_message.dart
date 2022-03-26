@@ -29,6 +29,7 @@ class _InputMessageState extends State<InputMessage>
   bool _isLoading = false;
   bool _isWriting = false;
   bool _isChoosing = false;
+  bool _isRecording = false;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +90,7 @@ class _InputMessageState extends State<InputMessage>
                               const SizedBox(
                                 height: 6,
                               ),
-                              Text('Camera',
+                              Text('Cámara',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -111,7 +112,7 @@ class _InputMessageState extends State<InputMessage>
                               const SizedBox(
                                 height: 6,
                               ),
-                              Text('Gallery',
+                              Text('Galería',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -133,7 +134,7 @@ class _InputMessageState extends State<InputMessage>
                               const SizedBox(
                                 height: 6,
                               ),
-                              Text('File',
+                              Text('Documento',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
@@ -144,17 +145,28 @@ class _InputMessageState extends State<InputMessage>
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              IconButton(
-                                  onPressed: () => print('Microphone'),
-                                  icon: FaIcon(
-                                    FontAwesomeIcons.microphone,
-                                    color: Colors.white70,
-                                    size: 34,
-                                  )),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(top: _isRecording ? 2 : 10),
+                                child: GestureDetector(
+                                    onLongPress: () => setState(() {
+                                          _isRecording = true;
+                                        }),
+                                    onLongPressUp: () => setState(() {
+                                          _isRecording = false;
+                                        }),
+                                    child: FaIcon(
+                                      FontAwesomeIcons.microphone,
+                                      color: _isRecording
+                                          ? Colors.red
+                                          : Colors.white70,
+                                      size: _isRecording ? 54 : 34,
+                                    )),
+                              ),
                               const SizedBox(
                                 height: 6,
                               ),
-                              Text('Record',
+                              Text(_isRecording ? 'Grabando' : 'Grabar',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,
