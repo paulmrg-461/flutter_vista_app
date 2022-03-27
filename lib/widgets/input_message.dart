@@ -348,7 +348,8 @@ class _InputMessageState extends State<InputMessage>
         encoder: AudioEncoder.AAC, // by default
         bitRate: 128000, // by default
       );
-    }
+    } else
+      setState(() => _isRecording = true);
   }
 
   Future<void> _stopRecording(String message) async {

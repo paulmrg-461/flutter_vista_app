@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.white10,
                       borderRadius: BorderRadius.circular(22)),
                   child: const Text(
-                      'Somos una oficina virtual donde encontrarás asesoría y acompañamiento de diferentes profesionales como abogados, contadores, ingenieros, administradores de empresas y asesores en el área que requieras, sin necesidad de moverte de tu casa o empresa, afíliate al GRUPO VISTA.',
+                      'Somos una oficina virtual donde encontrarás asesoría y acompañamiento de diferentes profesionales; abogados, contadores, ingenieros, administradores de empresas y asesores en el área que requieras, sin necesidad de moverte de tu casa o empresa, afíliate a GRUPO VISTA.',
                       textAlign: TextAlign.justify,
                       style: TextStyle(
                           color: Colors.white,

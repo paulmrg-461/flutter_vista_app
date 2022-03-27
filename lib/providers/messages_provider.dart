@@ -63,7 +63,7 @@ class MessagesProvider {
       final firebase_storage.TaskSnapshot taskSnapshot =
           await storage.ref(path).putFile(file);
 
-      return await taskSnapshot.ref.getDownloadURL();
+      return await (await taskSnapshot).ref.getDownloadURL();
     } on FirebaseException catch (e) {
       print(e);
       return 'Error';
